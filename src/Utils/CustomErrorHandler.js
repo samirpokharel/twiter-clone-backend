@@ -1,4 +1,4 @@
-import ErrorResponse from "../Models/Error";
+import ErrorResponse from "./ErrorResponse";
 
 export default function errorHandler(err, req, res, next) {
   let error = { ...err };
