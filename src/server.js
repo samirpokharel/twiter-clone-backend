@@ -1,5 +1,6 @@
 import dotEnv from "dotenv";
 import app from "./app";
+import "../Utils/DatabaseConnection";
 
 // Configure Envirnoment Veriable
 dotEnv.config({ path: "./.env" });
