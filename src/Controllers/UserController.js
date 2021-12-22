@@ -1,5 +1,5 @@
 import asyncHandler from "../Middleware/AsyncHandler";
-import ErrorResponse from '../Utils/ErrorResponse';
+import ErrorResponse from "../Utils/ErrorResponse";
 import User from "../Models/User";
 import { tokenResponse } from "../Utils/ResponseUtil";
 
@@ -22,10 +22,10 @@ exports.login_account = asyncHandler(async (req, res, next) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    return next(new ErrorResponse("Provide an User and password", 400));
+    return next(new ErrorResponse("Provide an Username and password", 400));
   }
   const user = await User.findOne({
-    $or: [{ username: req.body.logUsername }, { email: req.body.logUsername }],
+    $or: [{ username: username }, { email: username }],
   }).select("+password");
   if (!user) {
     return next(new ErrorResponse("User not found", 401));
