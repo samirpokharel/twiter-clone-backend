@@ -1,4 +1,7 @@
 import asyncHandler from "../Middleware/AsyncHandler";
+import ErrorResponse from '../Utils/ErrorResponse';
+import User from "../Models/User";
+import { tokenResponse } from "../Utils/ResponseUtil";
 
 /**
  * @title Create Account
@@ -6,7 +9,8 @@ import asyncHandler from "../Middleware/AsyncHandler";
  * @description create account with email and password
  */
 exports.create_account = asyncHandler(async (req, res, next) => {
-  //TODO: implement
+  const user = await User.create(req.body);
+  return tokenResponse(user, 200, res);
 });
 
 /**
@@ -15,7 +19,23 @@ exports.create_account = asyncHandler(async (req, res, next) => {
  * @description login in the with email and password
  */
 exports.login_account = asyncHandler(async (req, res, next) => {
-  //TODO: implement
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return next(new ErrorResponse("Provide an User and password", 400));
+  }
+  const user = await User.findOne({
+    $or: [{ username: req.body.logUsername }, { email: req.body.logUsername }],
+  }).select("+password");
+  if (!user) {
+    return next(new ErrorResponse("User not found", 401));
+  }
+  // Check if password matches
+  const isMatch = await user.matchPassword(password);
+  if (!isMatch) {
+    return next(new ErrorResponse("Invalid credentials", 401));
+  }
+  return tokenResponse(user, 200, res);
 });
 
 /**

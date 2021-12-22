@@ -1,5 +1,6 @@
 import ErrorResponse from "./ErrorResponse";
 
+
 export default function errorHandler(err, req, res, next) {
   let error = { ...err };
   error.message = err.message;
