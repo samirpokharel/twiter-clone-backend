@@ -9,13 +9,14 @@ const UserSchema = new Schema(
       type: String,
       required: [true, "Please provide Display name"],
     },
-    bio: { type: String, maxlength: 160 },
-    location: { type: String, maxlength: 30 },
-    username: { type: String, unique: true },
+    bio: { type: String, maxlength: 160, trim: true },
+    location: { type: String, maxlength: 30, trim: true },
+    username: { type: String, unique: true, trim: true },
     email: {
       type: String,
       required: [true, "Please provide Email Address"],
       unique: true,
+      trim: true,
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         "Please add a valid email",
