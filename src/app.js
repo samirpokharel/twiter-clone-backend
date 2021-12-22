@@ -1,6 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import errorHandler from "./Utils/CustomErrorHandler";
+import ErrorResponse from "./Utils/ErrorResponse";
 
 import UserRoute from "./Routes/UserRoutes";
 
