@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { generateFromEmail } from "../Utils/UserNameGenerator";
 
 const UserSchema = new Schema(
   {
@@ -10,9 +11,9 @@ const UserSchema = new Schema(
     },
     bio: { type: String, maxlength: 160 },
     location: { type: String, maxlength: 30 },
-    userName: {
+    username: {
       type: String,
-      required: [true, "Please provide Email Address"],
+      required: [true, "Please provide  Username"],
       unique: true,
     },
     email: {
@@ -32,7 +33,7 @@ const UserSchema = new Schema(
     profilePicture: { type: String, default: "no-photo.png" },
     coverPic: { type: String, default: "no-photo.png" },
     isVerified: { type: Boolean, default: false },
-    // TODO: 
+    // TODO:
     //likes: [{ type: Schema.Types.ObjectId, ref: "Post" }],
     following: [{ type: Schema.Types.ObjectId, ref: "User" }],
     followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
@@ -53,9 +54,14 @@ UserSchema.pre("save", async function (next) {
     next();
   }
   const salt = await bcrypt.genSalt();
+  // gen random username from email
+  this.username = generateFromEmail(this.email, 5);
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-
+// Match user entered password to hashed password in database
+UserSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 
 export default model("User", UserSchema);
