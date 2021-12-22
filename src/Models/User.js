@@ -51,7 +51,7 @@ UserSchema.pre("save", async function (next) {
   }
   const salt = await bcrypt.genSalt();
   // gen random username from email
-  this.username = generateFromEmail(this.email, 5);
+  this.username = generateFromEmail(this.email);
   this.password = await bcrypt.hash(this.password, salt);
 });
 
