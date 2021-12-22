@@ -20,13 +20,15 @@ exports.create_account = asyncHandler(async (req, res, next) => {
  */
 exports.login_account = asyncHandler(async (req, res, next) => {
   const { username, password } = req.body;
-
+  //Check username and password exists
   if (!username || !password) {
     return next(new ErrorResponse("Provide an Username and password", 400));
   }
+  // find user with username or password
   const user = await User.findOne({
     $or: [{ username: username }, { email: username }],
   }).select("+password");
+  // check user exists
   if (!user) {
     return next(new ErrorResponse("User not found", 401));
   }
@@ -35,6 +37,7 @@ exports.login_account = asyncHandler(async (req, res, next) => {
   if (!isMatch) {
     return next(new ErrorResponse("Invalid credentials", 401));
   }
+  //respond 200 with token
   return tokenResponse(user, 200, res);
 });
 
@@ -44,7 +47,7 @@ exports.login_account = asyncHandler(async (req, res, next) => {
  * @description returns the currently loged account
  */
 exports.current_account = asyncHandler(async (req, res, next) => {
-  //TODO: implement
+  return res.status(200).send({ success: true, data: req.user });
 });
 
 /**
