@@ -10,6 +10,7 @@ router.get("/conform-account", userCtrl.conform_account);
 router.post("/login-account", userCtrl.login_account);
 router.get("/current-account", protect, userCtrl.current_account);
 router.put("/update-account", protect, userCtrl.update_account);
+router.delete("/delete-account", protect, userCtrl.delete_account);
 router.post("/forgot-account-password", userCtrl.forgot_account_password);
 router.put("/reset-account-password", userCtrl.reset_account_password);
 

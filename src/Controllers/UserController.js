@@ -56,6 +56,7 @@ exports.current_account = asyncHandler(async (req, res, next) => {
  * @description update account
  */
 exports.update_account = asyncHandler(async (req, res, next) => {
+  // Select field to update
   const onlyUpdate = {
     displayName: req.body.displayName,
     bio: req.body.bio,
@@ -77,7 +78,7 @@ exports.update_account = asyncHandler(async (req, res, next) => {
  */
 
 exports.conform_account = asyncHandler(async (req, res, next) => {
-  //TODO: implement
+  //TODO: implement later...
 });
 
 /**
@@ -86,7 +87,7 @@ exports.conform_account = asyncHandler(async (req, res, next) => {
  * @description end point for password forgot
  */
 exports.forgot_account_password = asyncHandler(async (req, res, next) => {
-  //TODO: implement
+  //TODO: implement later...
 });
 
 /**
@@ -96,4 +97,30 @@ exports.forgot_account_password = asyncHandler(async (req, res, next) => {
  */
 exports.reset_account_password = asyncHandler(async (req, res, next) => {
   //TODO: implement
+});
+
+/**
+ * @title Delete Account
+ * @route DELETE /api/v1/user/delete-account
+ * @description delete account
+ */
+exports.delete_account = asyncHandler(async (req, res, next) => {
+  const password = req.body.conformPassword;
+  //Check username and password exists
+  if (!password) {
+    return next(new ErrorResponse("Please Conform Your Password", 400));
+  }
+  // find user with username or password
+  let user = await User.findById(req.user.id).select("+password");
+  // check user exists
+  if (!user) {
+    return next(new ErrorResponse("User not found", 401));
+  }
+  // Check if password matches
+  const isMatch = await user.matchPassword(password);
+  if (!isMatch) {
+    return next(new ErrorResponse("Invalid credentials", 401));
+  }
+  await user.remove();
+  return res.status(200).json({ success: true, data: user });
 });
