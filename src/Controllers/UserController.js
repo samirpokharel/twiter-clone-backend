@@ -56,7 +56,18 @@ exports.current_account = asyncHandler(async (req, res, next) => {
  * @description update account
  */
 exports.update_account = asyncHandler(async (req, res, next) => {
-  //TODO: implement
+  const onlyUpdate = {
+    displayName: req.body.displayName,
+    bio: req.body.bio,
+    location: req.body.location,
+    username: req.body.location,
+  };
+  const user = await User.findByIdAndUpdate(req.user.id, onlyUpdate, {
+    new: true,
+    runValidators: true,
+  });
+  if (!user) return next(new ErrorResponse("No User Found"));
+  return res.status(200).json({ success: true, data: user });
 });
 
 /**
