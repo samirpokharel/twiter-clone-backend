@@ -30,8 +30,7 @@ const UserSchema = new Schema(
     profilePicture: { type: String, default: "no-photo.png" },
     coverPic: { type: String, default: "no-photo.png" },
     isVerified: { type: Boolean, default: false },
-    // TODO:
-    //likes: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+    likes: [{ type: Schema.Types.ObjectId, ref: "Post" }],
     following: [{ type: Schema.Types.ObjectId, ref: "User" }],
     followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },

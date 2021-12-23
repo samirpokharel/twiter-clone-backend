@@ -22,3 +22,21 @@ exports.create_tweet = asyncHandler(async (req, res, next) => {
 exports.get_tweets = asyncHandler(async (req, res, next) => {
   return res.status(200).send(res.advancedResults);
 });
+
+/**
+ * @title Like Tweet
+ * @route GET /api/v1/tweets/:tweetId/like
+ * @description Like tweet
+ */
+exports.like_tweet = asyncHandler(async (req, res, next) => {
+  const userId = req.user.id;
+  const postId = req.params.tweetId;
+  const isLiked = req.user.likes.includes(postId);
+  var option = isLiked ? "$pull" : "$addToSet";
+  await User.findByIdAndUpdate(
+    userId,
+    { [option]: { likes: postId } },
+    { new: true }
+  );
+  return res.status(200);
+});
