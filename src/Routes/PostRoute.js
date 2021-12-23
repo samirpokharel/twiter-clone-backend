@@ -7,7 +7,11 @@ import Post from "../Models/Post";
 //initilize router
 const router = Router();
 // Routes...
-router.get("/", advancedResults(Post), postCtrl.get_tweets);
+router.get(
+  "/",
+  advancedResults(Post, "author retweet replyTo"),
+  postCtrl.get_tweets
+);
 router.post("/", protect, postCtrl.create_tweet);
 
 export default router;
