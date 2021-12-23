@@ -25,6 +25,51 @@ exports.get_posts = asyncHandler(async (req, res, next) => {
 });
 
 /**
+ * @title Get Single post
+ * @route GET /api/v1/posts/:postId
+ * @description get single post
+ */
+exports.get_post = asyncHandler(async (req, res, next) => {
+  const post = await User.findById(req.params.postId);
+  return res.status(200).send({ success: true, data: post });
+});
+
+/**
+ * @title Delete post
+ * @route DELETE /api/v1/posts/:postId
+ * @description Delete single post
+ */
+exports.delete_post = asyncHandler(async (req, res, next) => {
+  const post = await Post.findById(req.params.postId);
+  if (!post) return next(new ErrorResponse("Post Not Found", 404));
+
+  if (post.author.toString() !== req.user.id) {
+    return next(new ErrorResponse("You are not owner of this category", 403));
+  }
+  await post.remove();
+  return res.status(200).json({ success: true, data: post });
+});
+
+/**
+ * @Ttile: Update post
+ * @route PUT /api/v1/posts/:postId
+ * @description Update post
+ */
+exports.update_post = asyncHandler(async (req, res, next) => {
+  let post = await Post.findById(req.params.postId);
+  if (!post) return next(new ErrorResponse("Post Not Found", 404));
+  if (post.author.toString() !== req.user.id) {
+    return next(new ErrorResponse("You are not owner of this post", 403));
+  }
+  post = await Post.findByIdAndUpdate(req.params.postId, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  post.save();
+  return res.status(200).send({ success: true, data: post });
+});
+
+/**
  * @title Like post
  * @route PUT /api/v1/posts/:postId/like
  * @description Like post
