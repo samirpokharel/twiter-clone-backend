@@ -7,12 +7,7 @@ const PostSchema = new Schema(
       required: true,
       ref: "User",
     },
-    text: {
-      type: String,
-      maxlength: 289,
-      trim: true,
-      required: [true, "Please Provider Text"],
-    },
+    text: { type: String, maxlength: 289, trim: true },
     tags: [String],
     pinned: Boolean,
     likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
@@ -24,7 +19,9 @@ const PostSchema = new Schema(
 );
 
 PostSchema.pre("save", function (next) {
-  this.tags = this.text.split(" ").filter((item) => item.startsWith("#"));
+  if (this.text) {
+    this.tags = this.text.split(" ").filter((item) => item.startsWith("#"));
+  }
   next();
 });
 

@@ -31,6 +31,7 @@ const UserSchema = new Schema(
     coverPic: { type: String, default: "no-photo.png" },
     isVerified: { type: Boolean, default: false },
     likes: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+    retweets: [{ type: Schema.Types.ObjectId, ref: "Post" }],
     following: [{ type: Schema.Types.ObjectId, ref: "User" }],
     followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },

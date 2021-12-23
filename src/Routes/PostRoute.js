@@ -10,8 +10,11 @@ const router = Router();
 router.get(
   "/",
   advancedResults(Post, "author retweet replyTo"),
-  postCtrl.get_tweets
+  postCtrl.get_posts
 );
-router.post("/", protect, postCtrl.create_tweet);
+router.post("/", protect, postCtrl.create_post);
+router.put("/:postId/like", protect, postCtrl.like_post);
+router.put("/:postId/retweet", protect, postCtrl.retweet_post);
+
 
 export default router;
