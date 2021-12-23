@@ -136,3 +136,17 @@ exports.retweet_post = asyncHandler(async (req, res, next) => {
 
   return res.sendStatus(200);
 });
+
+/**
+ * @title Pin post
+ * @route PUT /api/v1/posts/:postId
+ * @description pin post to top
+ */
+
+exports.pin_post = asyncHandler(async (req, res, next) => {
+  if (req.body.pinned) {
+    await Post.updateMany({ author: req.user.id }, { pinned: false });
+  }
+  Post.findByIdAndUpdate(req.params.id, req.body);
+  return res.sendStatus(200);
+});
