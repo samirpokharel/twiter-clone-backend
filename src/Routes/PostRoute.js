@@ -12,9 +12,13 @@ router.get(
   advancedResults(Post, "author retweet replyTo"),
   postCtrl.get_posts
 );
+router.get("/:postId", postCtrl.get_post);
+router.delete("/:postId", postCtrl.delete_post);
+router.put("/:postId", postCtrl.update_post);
+
 router.post("/", protect, postCtrl.create_post);
+
 router.put("/:postId/like", protect, postCtrl.like_post);
 router.put("/:postId/retweet", protect, postCtrl.retweet_post);
-
 
 export default router;
