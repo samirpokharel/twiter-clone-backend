@@ -6,6 +6,8 @@ import ErrorResponse from "./Utils/ErrorResponse";
 // Routes..
 import AuthRoute from "./Routes/AuthRoutes";
 import PostsRoute from "./Routes/PostRoute";
+import UserRoute from "./Routes/UserRoute";
+
 
 const app = express();
 
@@ -15,6 +17,8 @@ app.use(express.json());
 //Routes...
 app.use("/api/v1/auth", AuthRoute);
 app.use("/api/v1/posts", PostsRoute);
+app.use("/api/v1/users", UserRoute);
+
 
 app.all("*", (req, res, next) => {
   return next(new ErrorResponse(`No ${req.url} found on this server.`, 404));
