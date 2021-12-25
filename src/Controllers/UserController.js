@@ -24,3 +24,27 @@ exports.search_user = asyncHandler(async (req, res, next) => {
   const users = await User.find(searchObj);
   return res.status(200).send({ success: true, data: users });
 });
+
+/**
+ * @title Follow user
+ * @route PUT /api/v1/users/:userId/follow
+ * @description flutter user
+ */
+exports.follow_user = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  const user = await User.findById(userId);
+  if (!user) return new ErrorResponse("User Not Found", 404);
+  const isFollowing = user.followers && user.followers.includes(req.user.id);
+  const option = isFollowing ? "$pull" : "$addToSet";
+
+  await User.findByIdAndUpdate(
+    req.user.id,
+    { [option]: { following: userId } },
+    { new: true }
+  );
+  await User.findByIdAndUpdate(userId, {
+    [option]: { followers: req.user.id },
+  });
+
+  return res.sendStatus(200);
+});
