@@ -56,27 +56,43 @@ exports.follow_user = asyncHandler(async (req, res, next) => {
  */
 exports.user_following = asyncHandler(async (req, res, next) => {
   const userId = req.params.userId;
-  let user =  User.findById(userId);
+  let user = User.findById(userId);
   if (!user) return new ErrorResponse("User Not Found", 404);
-  user = await user.populate("following")
+  user = await user.populate("following");
   // user = user.populate("following", "following");
 
   return res.status(200).send({ success: true, data: user.following });
 });
-
-
 
 /**
  * @title get user follower
  * @route GET /api/v1/users/:userId/follower
  * @description get user followers
  */
- exports.user_followers = asyncHandler(async (req, res, next) => {
+exports.user_followers = asyncHandler(async (req, res, next) => {
   const userId = req.params.userId;
-  let user =  User.findById(userId);
+  let user = User.findById(userId);
   if (!user) return new ErrorResponse("User Not Found", 404);
-  user = await user.populate("followers")
+  user = await user.populate("followers");
   // user = user.populate("followers", "followers");
 
   return res.status(200).send({ success: true, data: user.followers });
+});
+
+/**
+ * @title Upload profile picture
+ * @route POST /api/v1/users/user-profile-picture
+ * @description Update profile picture
+ */
+exports.user_profile_picture = asyncHandler(async (req, res, next) => {
+  //TODO: implement
+});
+
+/**
+ * @title Upload Cover Photo
+ * @route POST /api/v1/users/user-cover-picture
+ * @description Update cover picture
+ */
+exports.user_cover_picture = asyncHandler(async (req, res, next) => {
+  //TODO: implement
 });

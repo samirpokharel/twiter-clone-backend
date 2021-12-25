@@ -15,7 +15,6 @@ router.get(
 router.get("/:postId", postCtrl.get_post);
 router.delete("/:postId",protect, postCtrl.delete_post);
 router.put("/:postId",protect, postCtrl.update_post);
-
 router.post("/", protect, postCtrl.create_post);
 
 router.put("/:postId/like", protect, postCtrl.like_post);
