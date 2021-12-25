@@ -48,3 +48,18 @@ exports.follow_user = asyncHandler(async (req, res, next) => {
 
   return res.sendStatus(200);
 });
+
+/**
+ * @title get user following
+ * @route GET /api/v1/users/:userId/following
+ * @description get user following
+ */
+exports.user_following = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  let user =  User.findById(userId);
+  if (!user) return new ErrorResponse("User Not Found", 404);
+  user = await user.populate("following")
+  // user = user.populate("following", "following");
+
+  return res.status(200).send({ success: true, data: user.following });
+});

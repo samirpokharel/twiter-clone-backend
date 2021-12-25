@@ -8,7 +8,8 @@ import Post from "../Models/Post";
 const router = Router();
 // Routes...
 
-router.get("/search",userCtrl.search_user);
-
+router.get("/search", userCtrl.search_user);
+router.put("/:userId/follow", protect, userCtrl.follow_user);
+router.get("/:userId/following", userCtrl.user_following);
 
 export default router;
