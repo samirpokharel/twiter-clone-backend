@@ -11,5 +11,7 @@ const router = Router();
 router.get("/search", userCtrl.search_user);
 router.put("/:userId/follow", protect, userCtrl.follow_user);
 router.get("/:userId/following", userCtrl.user_following);
+router.get("/:userId/followers", userCtrl.user_followers);
+
 
 export default router;
