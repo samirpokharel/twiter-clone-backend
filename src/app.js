@@ -2,6 +2,8 @@ import express from "express";
 import morgan from "morgan";
 import errorHandler from "./Utils/CustomErrorHandler";
 import ErrorResponse from "./Utils/ErrorResponse";
+import fileUpload from 'express-fileupload'
+
 
 // Routes..
 import AuthRoute from "./Routes/AuthRoutes";
@@ -13,6 +15,8 @@ const app = express();
 
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(fileUpload())
+
 
 //Routes...
 app.use("/api/v1/auth", AuthRoute);

@@ -3,6 +3,7 @@ import app from "./app";
 import { connect } from "mongoose";
 import "colors";
 
+
 // Configure Envirnoment Veriable
 dotEnv.config({ path: "./.env" });
 

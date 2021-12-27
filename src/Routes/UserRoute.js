@@ -12,11 +12,11 @@ router.get("/search", userCtrl.search_user);
 router.put("/:userId/follow", protect, userCtrl.follow_user);
 router.get("/:userId/following", userCtrl.user_following);
 router.get("/:userId/followers", userCtrl.user_followers);
-router.get(
-  "/:userId/user-profile-picture",
+router.post(
+  "/user-profile-picture",
   protect,
   userCtrl.user_profile_picture
 );
-router.get("/:userId/user-cover-picture", protect, userCtrl.user_cover_picture);
+router.post("/user-cover-picture", protect, userCtrl.user_cover_picture);
 
 export default router;

@@ -110,6 +110,7 @@ exports.retweet_post = asyncHandler(async (req, res, next) => {
   // removedPost == null ? not retweeted : retweeted
   // not retweeted => create new post
   // retweeted => remove that tweet  [already removed] firstly
+  if (!postId) return res.sendStatus(400);
   const deletedPost = await Post.findOneAndDelete({
     author: userId,
     retweet: postId,
